@@ -11,12 +11,13 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
 import kotlinx.android.synthetic.main.fragment_new_settings.*
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.InfoActivity
 import org.mozilla.focus.session.SessionManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import android.webkit.CookieManager
+import org.mozilla.focus.webview.SystemWebView
 
 /** The home fragment which displays the navigation tiles of the app. */
 class NewSettingsFragment : Fragment() {
@@ -31,6 +32,7 @@ class NewSettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         setTelemetryUIChecked(TelemetryWrapper.isTelemetryEnabled(context))
+
         telemetryButton.setOnClickListener { view ->
             val telemetryEnabled = !TelemetryWrapper.isTelemetryEnabled(activity)
             TelemetryWrapper.setTelemetryEnabled(activity, telemetryEnabled)
@@ -47,7 +49,7 @@ class NewSettingsFragment : Fragment() {
                     "OK",
                     DialogInterface.OnClickListener { dialog, id ->
                         SessionManager.getInstance().removeAllSessions()
-                        CookieManager.getInstance().removeAllCookies(null)
+                        settingsWebView.cleanup()
                         dialog.cancel() })
 
             builder1.setNegativeButton(
