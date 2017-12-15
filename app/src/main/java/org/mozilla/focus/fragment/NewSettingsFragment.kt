@@ -18,7 +18,7 @@ import org.mozilla.focus.R.id.*
 import org.mozilla.focus.activity.InfoActivity
 import org.mozilla.focus.session.SessionManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
-
+import android.webkit.CookieManager
 
 /** The home fragment which displays the navigation tiles of the app. */
 class NewSettingsFragment : Fragment() {
@@ -46,6 +46,7 @@ class NewSettingsFragment : Fragment() {
                     "OK",
                     DialogInterface.OnClickListener { dialog, id ->
                         SessionManager.getInstance().removeAllSessions()
+                        CookieManager.getInstance().removeAllCookies(null)
                         dialog.cancel() })
 
             builder1.setNegativeButton(
